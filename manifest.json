@@ -1,0 +1,26 @@
+{
+  "name": "Ailter Design System",
+  "short_name": "Ailter",
+  "description": "Ailter — AI Filter 디자인 시스템",
+  "start_url": "/Ailter_0607/",
+  "scope": "/Ailter_0607/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#F9FAFB",
+  "theme_color": "#FF3C38",
+  "lang": "ko",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

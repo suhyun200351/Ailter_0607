@@ -3,6 +3,12 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="theme-color" content="#FF3C38" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="default" />
+<meta name="apple-mobile-web-app-title" content="Ailter" />
+<link rel="manifest" href="manifest.json" />
+<link rel="apple-touch-icon" href="icon-192.png" />
 <title>Ailter — Design System</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css" />
 <link rel="stylesheet" href="styles/ailter-tokens.css" />
@@ -725,6 +731,11 @@ const tomato = `<svg viewBox="0 0 48 44" fill="none" xmlns="http://www.w3.org/20
     <stop stop-color="#FF6360"/><stop offset="1" stop-color="#D4231F"/></linearGradient></defs>
 </svg>`;
 document.querySelectorAll('.tomato').forEach(s=>s.outerHTML = tomato.replace('<svg', `<svg class="${s.getAttribute('class')}" style="${s.getAttribute('style')||''}"`));
+</script>
+<script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('sw.js');
+  }
 </script>
 </body>
 </html>
