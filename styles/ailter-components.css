@@ -1,0 +1,272 @@
+/* ============================================================
+   Ailter — Components
+   Reusable class-based components built on ailter-tokens.css.
+   Prefix: .alt-  (Ailter)
+   ============================================================ */
+
+/* ---------- Buttons ----------------------------------------- */
+.alt-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  font-family: var(--font-sans);
+  letter-spacing: var(--tracking);
+  border: none;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background-color .15s ease, box-shadow .15s ease, color .15s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+/* sizes */
+.alt-btn--lg { height: 56px; padding: 0 20px; border-radius: var(--radius-md);
+  font-size: var(--fs-btn-lg); font-weight: var(--fw-btn-lg); }
+.alt-btn--md { height: 48px; padding: 0 18px; border-radius: var(--radius-md);
+  font-size: var(--fs-btn-lg); font-weight: var(--fw-btn-lg); }
+.alt-btn--sm { height: 36px; padding: 0 14px; border-radius: var(--radius-sm);
+  font-size: var(--fs-btn-sm); font-weight: var(--fw-btn-sm); }
+.alt-btn--block { display: flex; width: 100%; }
+
+/* variants */
+.alt-btn--primary { background: var(--primary-500); color: var(--text-on-brand); }
+.alt-btn--primary:hover { background: var(--primary-600); }
+.alt-btn--primary:active { background: var(--primary-700); }
+
+.alt-btn--secondary {
+  background: var(--surface); color: var(--text-strong);
+  box-shadow: inset 0 0 0 1px var(--border);
+}
+.alt-btn--secondary:hover { background: var(--gray-100); }
+
+.alt-btn--tonal { background: var(--surface-sunken); color: var(--text-muted);
+  box-shadow: inset 0 0 0 1px var(--border); }
+.alt-btn--tonal:hover { background: var(--gray-200); }
+
+.alt-btn--neutral { background: var(--gray-400); color: var(--white); }
+.alt-btn--neutral:hover { background: var(--gray-500); }
+
+.alt-btn:disabled, .alt-btn--disabled {
+  background: var(--gray-400); color: var(--gray-200);
+  box-shadow: none; cursor: not-allowed; pointer-events: none;
+}
+
+/* ---------- Selectable option row -------------------------- */
+.alt-option {
+  display: flex; align-items: center; gap: var(--space-2);
+  width: 100%; min-height: 56px; padding: 0 16px;
+  border-radius: var(--radius-md);
+  background: var(--surface-sunken);
+  box-shadow: inset 0 0 0 1px var(--border);
+  font-family: var(--font-sans); font-size: var(--fs-body2); font-weight: 500;
+  letter-spacing: var(--tracking); color: var(--text-muted);
+  cursor: pointer; transition: all .15s ease;
+}
+.alt-option:hover { box-shadow: inset 0 0 0 1px var(--border-strong); }
+.alt-option[aria-selected="true"], .alt-option.is-selected {
+  background: var(--surface-tonal);
+  box-shadow: inset 0 0 0 1.5px var(--primary-500);
+  color: var(--text-strong);
+}
+
+/* ---------- Text input / dropdown -------------------------- */
+.alt-field {
+  display: flex; align-items: center; gap: var(--space-2);
+  width: 100%; min-height: 52px; padding: 0 16px;
+  background: var(--surface-sunken);
+  border-radius: var(--radius-md);
+  box-shadow: inset 0 0 0 1px var(--border);
+  font-family: var(--font-sans); letter-spacing: var(--tracking);
+  transition: box-shadow .15s ease, background-color .15s ease;
+}
+.alt-field:focus-within { box-shadow: inset 0 0 0 1.5px var(--primary-500); background: var(--surface); }
+.alt-field input {
+  flex: 1; border: none; background: transparent; outline: none;
+  font: inherit; color: var(--text-strong); letter-spacing: inherit;
+  font-size: var(--fs-body1); min-width: 0;
+}
+.alt-field input::placeholder { color: var(--text-subtle); }
+.alt-field--dropdown { cursor: pointer; color: var(--text-subtle); font-size: var(--fs-body1); }
+.alt-field .alt-field__chevron { color: var(--gray-400); flex-shrink: 0; }
+.alt-field--filled { color: var(--text-strong); }
+
+.alt-search { display: flex; gap: var(--space-2); width: 100%; }
+.alt-search .alt-field { flex: 1; }
+
+/* ---------- Checkbox --------------------------------------- */
+.alt-checkbox { position: relative; display: inline-flex; cursor: pointer; }
+.alt-checkbox input { position: absolute; opacity: 0; inset: 0; cursor: pointer; }
+.alt-checkbox__box {
+  width: 24px; height: 24px; border-radius: var(--radius-sm);
+  box-shadow: inset 0 0 0 1.5px var(--border-strong);
+  display: grid; place-items: center; transition: all .15s ease;
+  background: var(--surface);
+}
+.alt-checkbox__box svg { opacity: 0; transition: opacity .12s ease; color: var(--white); }
+.alt-checkbox input:checked + .alt-checkbox__box {
+  background: var(--primary-500); box-shadow: none;
+}
+.alt-checkbox input:checked + .alt-checkbox__box svg { opacity: 1; }
+
+/* ---------- Radio ------------------------------------------ */
+.alt-radio { position: relative; display: inline-flex; cursor: pointer; }
+.alt-radio input { position: absolute; opacity: 0; inset: 0; cursor: pointer; }
+.alt-radio__dot {
+  width: 22px; height: 22px; border-radius: var(--radius-full);
+  box-shadow: inset 0 0 0 1.5px var(--border-strong);
+  display: grid; place-items: center; transition: all .15s ease;
+  background: var(--surface);
+}
+.alt-radio__dot::after {
+  content: ""; width: 10px; height: 10px; border-radius: var(--radius-full);
+  background: var(--white); transform: scale(0); transition: transform .15s ease;
+}
+.alt-radio input:checked + .alt-radio__dot {
+  box-shadow: inset 0 0 0 7px var(--primary-500);
+}
+.alt-radio input:checked + .alt-radio__dot::after { transform: scale(1); }
+
+/* ---------- Toggle ----------------------------------------- */
+.alt-toggle { position: relative; display: inline-flex; cursor: pointer; }
+.alt-toggle input { position: absolute; opacity: 0; inset: 0; cursor: pointer; }
+.alt-toggle__track {
+  width: 48px; height: 26px; border-radius: var(--radius-full);
+  background: var(--gray-200); padding: 3px; display: flex; align-items: center;
+  transition: background-color .18s ease;
+}
+.alt-toggle__thumb {
+  width: 20px; height: 20px; border-radius: var(--radius-full);
+  background: var(--white); box-shadow: 0 1px 3px rgba(0,0,0,.2);
+  transition: transform .18s ease;
+}
+.alt-toggle input:checked + .alt-toggle__track { background: var(--primary-500); }
+.alt-toggle input:checked + .alt-toggle__track .alt-toggle__thumb { transform: translateX(22px); }
+
+/* ---------- Tags / status badges --------------------------- */
+.alt-tag {
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 4px 9px; border-radius: var(--radius-sm);
+  font-family: var(--font-sans); font-size: var(--fs-caption); font-weight: 500;
+  letter-spacing: var(--tracking); line-height: 1; white-space: nowrap;
+}
+.alt-tag__dot { width: 6px; height: 6px; border-radius: var(--radius-full); background: currentColor; }
+.alt-tag--danger  { background: var(--danger-bg);  color: var(--danger); }
+.alt-tag--caution { background: var(--caution-bg); color: var(--caution); }
+.alt-tag--safe    { background: var(--safe-bg);    color: var(--safe); }
+.alt-tag--neutral { background: var(--gray-100);   color: var(--text-muted); box-shadow: inset 0 0 0 1px var(--border); }
+
+/* legend item: colored dot + colored label, no pill */
+.alt-legend { display: inline-flex; align-items: center; gap: 5px;
+  font-size: var(--fs-caption); letter-spacing: var(--tracking); font-family: var(--font-sans); }
+.alt-legend .alt-tag__dot { width: 8px; height: 8px; }
+.alt-legend--danger  { color: var(--danger); }
+.alt-legend--caution { color: var(--caution); }
+.alt-legend--safe    { color: var(--safe); }
+
+/* ---------- Filter chips ----------------------------------- */
+.alt-chip {
+  display: inline-flex; align-items: center; height: 34px; padding: 0 14px;
+  border-radius: var(--radius-full); background: var(--surface);
+  box-shadow: inset 0 0 0 1px var(--border-strong);
+  font-family: var(--font-sans); font-size: var(--fs-body2); font-weight: 500;
+  letter-spacing: var(--tracking); color: var(--text-muted); cursor: pointer;
+  transition: all .15s ease;
+}
+.alt-chip:hover { box-shadow: inset 0 0 0 1px var(--gray-400); }
+.alt-chip[aria-pressed="true"], .alt-chip.is-active {
+  background: var(--primary-50); box-shadow: inset 0 0 0 1.5px var(--primary-500);
+  color: var(--primary-500);
+}
+
+/* ---------- Cards ------------------------------------------ */
+.alt-card {
+  background: var(--surface); border-radius: var(--radius-lg);
+  box-shadow: inset 0 0 0 1px var(--border), var(--shadow-card);
+  padding: var(--space-5);
+}
+.alt-card--flat { box-shadow: inset 0 0 0 1px var(--border); }
+
+/* list row (platform item) */
+.alt-list-item { display: flex; align-items: center; gap: var(--space-3); padding: var(--space-3) 0; }
+.alt-list-item__media {
+  width: 40px; height: 40px; border-radius: var(--radius-md); flex-shrink: 0;
+  display: grid; place-items: center; overflow: hidden; background: var(--gray-100);
+}
+.alt-list-item__body { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+.alt-list-item__title { font-size: var(--fs-sub2); font-weight: 600; color: var(--text-strong);
+  letter-spacing: var(--tracking); }
+.alt-list-item__meta { font-size: var(--fs-caption); color: var(--text-subtle);
+  letter-spacing: var(--tracking); }
+.alt-divider { height: 1px; background: var(--border); border: none; margin: 0; }
+
+/* section header */
+.alt-section-head { display: flex; align-items: center; justify-content: space-between; }
+.alt-section-head__title { font-size: var(--fs-sub1); font-weight: 600; color: var(--text-strong);
+  letter-spacing: var(--tracking); }
+.alt-section-head__more { font-size: var(--fs-caption); color: var(--text-subtle);
+  letter-spacing: var(--tracking); cursor: pointer; }
+
+/* ---------- Social login ----------------------------------- */
+.alt-social {
+  display: flex; align-items: center; justify-content: center; gap: var(--space-2);
+  width: 100%; height: 52px; border-radius: var(--radius-sm);
+  font-family: var(--font-sans); font-size: var(--fs-body2); font-weight: 500;
+  letter-spacing: -0.016em; cursor: pointer; border: none;
+}
+.alt-social img, .alt-social svg { width: 20px; height: 20px; }
+.alt-social--kakao  { background: var(--kakao); color: var(--kakao-ink); }
+.alt-social--google { background: var(--white); color: var(--black);
+  box-shadow: inset 0 0 0 1px var(--border); }
+.alt-social--apple  { background: var(--gray-100); color: var(--black); }
+
+/* ---------- Progress bar ----------------------------------- */
+.alt-progress { width: 100%; height: 6px; border-radius: var(--radius-full);
+  background: var(--gray-200); overflow: hidden; }
+.alt-progress__fill { height: 100%; border-radius: var(--radius-full);
+  background: var(--primary-500); }
+
+/* ---------- Bottom navigation ------------------------------ */
+.alt-tabbar {
+  display: flex; background: var(--surface); padding: 8px 12px 0;
+  box-shadow: var(--shadow-nav);
+}
+.alt-tab {
+  flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px;
+  padding: 6px 0; background: none; border: none; cursor: pointer;
+  color: var(--gray-400); font-family: var(--font-sans);
+  font-size: 11px; letter-spacing: var(--tracking);
+}
+.alt-tab svg { width: 24px; height: 24px; }
+.alt-tab.is-active { color: var(--primary-500); }
+
+/* ---------- iOS chrome ------------------------------------- */
+.alt-statusbar {
+  display: flex; align-items: center; justify-content: space-between;
+  height: 50px; padding: 0 24px 0 32px; background: var(--surface);
+  font-family: -apple-system, "SF Pro", var(--font-sans);
+}
+.alt-statusbar__time { font-weight: 600; font-size: 16px; color: var(--black); }
+.alt-statusbar__icons { display: flex; align-items: center; gap: 7px; }
+.alt-home-indicator { height: 34px; display: grid; place-items: center; background: var(--surface); }
+.alt-home-indicator::after { content: ""; width: 140px; height: 5px;
+  border-radius: var(--radius-full); background: var(--black); }
+
+/* ---------- App header ------------------------------------- */
+.alt-appbar { display: flex; align-items: center; justify-content: space-between;
+  padding: 10px 20px; background: var(--surface); }
+.alt-appbar__right { display: flex; align-items: center; gap: 14px; }
+.alt-appbar__toggle { display: flex; align-items: center; gap: 8px;
+  font-size: var(--fs-caption); color: var(--text-muted); letter-spacing: var(--tracking); }
+
+/* ---------- Wordmark --------------------------------------- */
+.alt-wordmark { font-family: var(--font-display); font-weight: 800;
+  letter-spacing: var(--tracking-logo); color: var(--primary-500); line-height: 1; }
+
+/* ---------- Gauge (trust meter) ---------------------------- */
+.alt-gauge { position: relative; width: 220px; }
+.alt-gauge svg { width: 100%; display: block; }
+.alt-gauge__center { position: absolute; left: 0; right: 0; bottom: 6px;
+  text-align: center; }
+.alt-gauge__label { font-size: var(--fs-body2); font-weight: 600; letter-spacing: var(--tracking);
+  color: var(--caution); }
+.alt-gauge__value { font-size: 34px; font-weight: 700; letter-spacing: var(--tracking);
+  color: var(--text-strong); line-height: 1.1; }

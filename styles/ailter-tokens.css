@@ -1,0 +1,124 @@
+/* ============================================================
+   Ailter — Design Tokens
+   Source of truth for the Ailter ("AI Filter") product system.
+   Extracted 1:1 from the Figma file "Ailter 개발용".
+   All component styles consume these custom properties.
+   ============================================================ */
+
+:root {
+  /* ---------- Brand / Primary (red) ---------- */
+  --primary-50:  #FFF8F8;
+  --primary-100: #FFD8D7;
+  --primary-200: #FFB1AF;
+  --primary-300: #FF8A88;
+  --primary-400: #FF6360;
+  --primary-500: #FF3C38;   /* brand core */
+  --primary-600: #CF302D;
+  --primary-700: #9F2422;
+  --primary-800: #6F1816;
+  --primary-900: #3F0C0B;
+
+  /* ---------- Gray scale ---------- */
+  --gray-50:  #FCFCFD;
+  --gray-100: #F9FAFB;
+  --gray-200: #E9EBEF;
+  --gray-300: #C5C6CD;
+  --gray-400: #999BA5;
+  --gray-500: #6F717C;
+  --black:    #1E1E1E;
+  --white:    #FFFFFF;
+
+  /* ---------- Semantic status (콘텐츠 신뢰도) ---------- */
+  --safe:        #009EFF;   /* 안전  */
+  --safe-bg:     #E6F5FF;
+  --caution:     #FF9900;   /* 주의  */
+  --caution-bg:  #FFF4E5;
+  --danger:      #FF3C38;   /* 위험  */
+  --danger-bg:   #FFEAE9;
+
+  /* ---------- Semantic surface / text roles ---------- */
+  --bg:            var(--gray-100);   /* app canvas */
+  --surface:       var(--white);
+  --surface-sunken:var(--gray-100);
+  --surface-tonal: var(--primary-50);
+
+  --text-strong:   var(--black);      /* titles */
+  --text-default:  #2B2D36;
+  --text-muted:    var(--gray-500);   /* secondary copy */
+  --text-subtle:   var(--gray-400);   /* captions / placeholder */
+  --text-on-brand: var(--white);
+
+  --border:        var(--gray-200);
+  --border-strong: var(--gray-300);
+  --focus-ring:    var(--primary-500);
+
+  /* ---------- Typography ---------- */
+  --font-sans: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont,
+               "Apple SD Gothic Neo", "Segoe UI", Roboto, "Helvetica Neue", Arial,
+               "Noto Sans KR", sans-serif;
+  --font-display: "Wanted Sans Variable", "Wanted Sans", var(--font-sans);
+
+  --tracking: -0.02em;     /* default Korean tracking, -2% */
+  --tracking-logo: -0.04em;
+
+  /* Type ramp — size / weight (line-heights applied in classes) */
+  --fs-h1: 40px; --fw-h1: 600;
+  --fs-h2: 24px; --fw-h2: 700;
+  --fs-h3: 20px; --fw-h3: 600;
+  --fs-sub1: 18px; --fw-sub1: 600;
+  --fs-sub2: 16px; --fw-sub2: 600;
+  --fs-body1: 16px; --fw-body1: 400;
+  --fs-body2: 14px; --fw-body2: 400;
+  --fs-btn-lg: 16px; --fw-btn-lg: 500;
+  --fs-btn-sm: 14px; --fw-btn-sm: 500;
+  --fs-caption: 12px; --fw-caption: 400;
+
+  /* ---------- Spacing (4px base grid) ---------- */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+
+  /* ---------- Radius ---------- */
+  --radius-xs: 4px;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 20px;
+  --radius-full: 999px;
+
+  /* ---------- Elevation ---------- */
+  --shadow-card:  0 0 20px 0 rgba(0,0,0,0.02);
+  --shadow-soft:  0 2px 12px 0 rgba(0,0,0,0.04);
+  --shadow-pop:   0 8px 28px -6px rgba(0,0,0,0.16);
+  --shadow-nav:   0 -2px 16px 0 rgba(0,0,0,0.04);
+
+  /* ---------- Brand third-party ---------- */
+  --kakao: #F9E000;
+  --kakao-ink: #1E1E1E;
+}
+
+/* ============================================================
+   Typography utility classes — the Ailter type ramp
+   ============================================================ */
+.alt-h1, .alt-h2, .alt-h3, .alt-sub1, .alt-sub2,
+.alt-body1, .alt-body2, .alt-btn-lg, .alt-btn-sm, .alt-caption {
+  font-family: var(--font-sans);
+  letter-spacing: var(--tracking);
+  margin: 0;
+}
+.alt-h1   { font-size: var(--fs-h1);   font-weight: var(--fw-h1);   line-height: 1.5; }
+.alt-h2   { font-size: var(--fs-h2);   font-weight: var(--fw-h2);   line-height: 1.5; }
+.alt-h3   { font-size: var(--fs-h3);   font-weight: var(--fw-h3);   line-height: 1.5; }
+.alt-sub1 { font-size: var(--fs-sub1); font-weight: var(--fw-sub1); line-height: 1.5; }
+.alt-sub2 { font-size: var(--fs-sub2); font-weight: var(--fw-sub2); line-height: 1.5; }
+.alt-body1{ font-size: var(--fs-body1);font-weight: var(--fw-body1);line-height: 1.5; }
+.alt-body2{ font-size: var(--fs-body2);font-weight: var(--fw-body2);line-height: 1.5; }
+.alt-btn-lg{ font-size: var(--fs-btn-lg);font-weight: var(--fw-btn-lg);line-height: 1; }
+.alt-btn-sm{ font-size: var(--fs-btn-sm);font-weight: var(--fw-btn-sm);line-height: 1; }
+.alt-caption{font-size: var(--fs-caption);font-weight: var(--fw-caption);line-height: 1.5;}

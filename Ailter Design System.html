@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Ailter — Design System</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css" />
+<link rel="stylesheet" href="styles/ailter-tokens.css" />
+<link rel="stylesheet" href="styles/ailter-components.css" />
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0; background: var(--bg); color: var(--text-strong);
+    font-family: var(--font-sans); letter-spacing: var(--tracking);
+    -webkit-font-smoothing: antialiased;
+  }
+  /* ---- layout ---- */
+  .doc { display: grid; grid-template-columns: 248px minmax(0,1fr); }
+  .nav {
+    position: sticky; top: 0; align-self: start; height: 100vh; overflow-y: auto;
+    background: var(--surface); border-right: 1px solid var(--border);
+    padding: 28px 20px; display: flex; flex-direction: column; gap: 4px;
+  }
+  .nav__brand { display: flex; align-items: center; gap: 10px; margin-bottom: 22px; padding: 0 8px; }
+  .nav__brand .alt-wordmark { font-size: 26px; }
+  .nav__brand small { font-size: 11px; color: var(--text-subtle); font-weight: 500; }
+  .nav__group { font-size: 11px; font-weight: 700; color: var(--text-subtle);
+    text-transform: uppercase; letter-spacing: .06em; margin: 18px 8px 6px; }
+  .nav a {
+    display: block; padding: 8px 12px; border-radius: 8px; text-decoration: none;
+    color: var(--text-muted); font-size: 14px; font-weight: 500;
+  }
+  .nav a:hover { background: var(--gray-100); color: var(--text-strong); }
+  .main { padding: 0 clamp(20px, 5vw, 72px) 120px; max-width: 1100px; }
+
+  /* ---- hero ---- */
+  .hero { padding: 80px 0 48px; border-bottom: 1px solid var(--border); }
+  .hero__mark { display: flex; align-items: baseline; gap: 14px; }
+  .hero__mark .alt-wordmark { font-size: 72px; }
+  .hero__mark .tomato { width: 44px; height: 44px; align-self: center; }
+  .hero p.lead { font-size: 20px; color: var(--text-muted); margin: 18px 0 0; max-width: 620px; line-height: 1.6; }
+  .hero__meta { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 28px; }
+  .hero__meta span { display: inline-flex; align-items: center; gap: 7px;
+    padding: 7px 13px; background: var(--surface); border-radius: var(--radius-full);
+    box-shadow: inset 0 0 0 1px var(--border); font-size: 13px; color: var(--text-muted); }
+  .hero__meta b { color: var(--text-strong); font-weight: 600; }
+
+  /* ---- section scaffolding ---- */
+  section.block { padding: 64px 0; border-bottom: 1px solid var(--border); }
+  .block > h2 { font-size: 13px; font-weight: 700; color: var(--primary-500);
+    text-transform: uppercase; letter-spacing: .08em; margin: 0 0 6px; }
+  .block > h3.title { font-size: 30px; font-weight: 700; margin: 0 0 8px; letter-spacing: var(--tracking); }
+  .block > p.desc { font-size: 16px; color: var(--text-muted); margin: 0 0 32px; max-width: 680px; line-height: 1.6; }
+  .sub { font-size: 13px; font-weight: 700; color: var(--text-subtle); text-transform: uppercase;
+    letter-spacing: .05em; margin: 40px 0 16px; }
+  .sub:first-of-type { margin-top: 0; }
+
+  /* ---- color ---- */
+  .ramp { display: grid; grid-template-columns: repeat(auto-fill, minmax(112px,1fr)); gap: 10px; }
+  .swatch { border-radius: var(--radius-md); overflow: hidden; background: var(--surface);
+    box-shadow: inset 0 0 0 1px var(--border); }
+  .swatch__chip { height: 76px; }
+  .swatch__meta { padding: 10px 12px; }
+  .swatch__name { font-size: 13px; font-weight: 600; }
+  .swatch__hex { font-size: 12px; color: var(--text-subtle); font-variant-numeric: tabular-nums;
+    text-transform: uppercase; margin-top: 2px; }
+  .semantic-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px,1fr)); gap: 16px; }
+  .semantic-card { padding: 18px; border-radius: var(--radius-lg); display: flex; flex-direction: column; gap: 12px; }
+  .semantic-card .row { display: flex; align-items: center; gap: 10px; }
+  .semantic-card .dot { width: 14px; height: 14px; border-radius: 50%; }
+  .semantic-card h4 { margin: 0; font-size: 16px; font-weight: 700; }
+  .semantic-card code { font-size: 12px; color: var(--text-muted); }
+
+  /* ---- type specimen ---- */
+  .type-row { display: grid; grid-template-columns: 130px 1fr; gap: 24px; align-items: baseline;
+    padding: 20px 0; border-top: 1px solid var(--border); }
+  .type-row:last-child { border-bottom: 1px solid var(--border); }
+  .type-row .tk { font-size: 13px; color: var(--text-subtle); }
+  .type-row .tk b { display: block; color: var(--text-strong); font-size: 14px; margin-bottom: 4px; }
+
+  /* ---- spacing / radius ---- */
+  .scale-list { display: flex; flex-direction: column; gap: 10px; }
+  .scale-row { display: flex; align-items: center; gap: 16px; }
+  .scale-row .bar { background: var(--primary-200); height: 16px; border-radius: 3px; }
+  .scale-row .lbl { font-size: 13px; color: var(--text-muted); width: 130px; }
+  .scale-row .lbl b { color: var(--text-strong); }
+  .radius-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px,1fr)); gap: 16px; }
+  .radius-tile { aspect-ratio: 1.4; background: var(--surface-tonal);
+    box-shadow: inset 0 0 0 1.5px var(--primary-300); display: grid; place-items: end center;
+    padding: 10px; font-size: 12px; color: var(--primary-600); font-weight: 600; }
+  .elev-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px,1fr)); gap: 20px; }
+  .elev-tile { height: 120px; background: var(--surface); border-radius: var(--radius-lg);
+    display: grid; place-items: center; font-size: 13px; color: var(--text-muted); font-weight: 500; }
+
+  /* ---- component demo cards ---- */
+  .demo { background: var(--surface); border-radius: var(--radius-lg);
+    box-shadow: inset 0 0 0 1px var(--border); overflow: hidden; margin-bottom: 16px; }
+  .demo__stage { padding: 32px; display: flex; flex-wrap: wrap; gap: 18px; align-items: center; }
+  .demo__stage.col { flex-direction: column; align-items: stretch; }
+  .demo__stage.center { justify-content: center; }
+  .demo__stage.tinted { background:
+    repeating-linear-gradient(45deg, var(--gray-50), var(--gray-50) 12px, transparent 12px, transparent 24px),
+    var(--gray-100); }
+  .demo__foot { padding: 14px 18px; border-top: 1px solid var(--border); display: flex; gap: 18px;
+    flex-wrap: wrap; font-size: 13px; color: var(--text-muted); }
+  .demo__foot b { color: var(--text-strong); font-weight: 600; }
+  .demo h4.dh { margin: 0 0 4px; font-size: 18px; font-weight: 600; }
+  .demo p.dp { margin: 0 0 20px; font-size: 14px; color: var(--text-muted); }
+  .compo { margin-bottom: 30px; }
+  .compo > .lead { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; margin-bottom: 14px; }
+  .compo h4 { margin: 0; font-size: 20px; font-weight: 700; letter-spacing: var(--tracking); }
+  .compo .api { font-size: 12px; color: var(--text-subtle); font-family: ui-monospace, Menlo, monospace; }
+  .compo p.note { margin: 0 0 16px; font-size: 14px; color: var(--text-muted); line-height: 1.6; max-width: 680px; }
+
+  pre { margin: 0; background: #1b1c22; color: #e7e8ee; padding: 18px 20px; overflow-x: auto;
+    font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 12.5px; line-height: 1.65; }
+  pre .t { color: #ff8a88; } pre .a { color: #c5c6cd; } pre .s { color: #b8e6c4; }
+  details.code { border-top: 1px solid var(--border); }
+  details.code summary { padding: 12px 18px; cursor: pointer; font-size: 13px; font-weight: 600;
+    color: var(--text-muted); list-style: none; user-select: none; }
+  details.code summary::-webkit-details-marker { display: none; }
+  details.code summary::before { content: "› "; }
+  details.code[open] summary::before { content: "⌄ "; }
+
+  .pair { display: flex; gap: 22px; align-items: center; flex-wrap: wrap; }
+  .lbl-tiny { font-size: 12px; color: var(--text-subtle); margin-top: 8px; text-align: center; }
+  .stack { display: flex; flex-direction: column; gap: 8px; align-items: center; }
+
+  /* ---- phone mockup ---- */
+  .phone { width: 360px; background: var(--surface); border-radius: 44px; padding: 0;
+    box-shadow: 0 30px 80px -24px rgba(0,0,0,.35), inset 0 0 0 10px #111318, inset 0 0 0 11px #2a2c33;
+    overflow: hidden; }
+  .phone__screen { border-radius: 34px; overflow: hidden; background: var(--bg); }
+  .screen-body { padding: 16px 20px 0; display: flex; flex-direction: column; gap: 18px; }
+  .greet-card { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+  .greet-card > div:first-child { flex: 1; min-width: 0; }
+  .greet-card .tomato { width: 92px; height: 68px; flex-shrink: 0; }
+  .nowrap { white-space: nowrap; }
+  @media (max-width: 860px) {
+    .doc { grid-template-columns: 1fr; }
+    .nav { display: none; }
+    .hero__mark .alt-wordmark { font-size: 52px; }
+  }
+</style>
+</head>
+<body>
+<div class="doc">
+
+  <!-- ============ SIDEBAR ============ -->
+  <aside class="nav">
+    <div class="nav__brand">
+      <span class="alt-wordmark">Ailter</span>
+    </div>
+    <div class="nav__group">Foundations</div>
+    <a href="#overview">Overview</a>
+    <a href="#color">Color</a>
+    <a href="#type">Typography</a>
+    <a href="#space">Spacing &amp; Radius</a>
+    <a href="#elevation">Elevation</a>
+    <div class="nav__group">Components</div>
+    <a href="#buttons">Buttons</a>
+    <a href="#options">Option rows</a>
+    <a href="#fields">Inputs &amp; Dropdown</a>
+    <a href="#selection">Selection controls</a>
+    <a href="#tags">Tags &amp; badges</a>
+    <a href="#chips">Filter chips</a>
+    <a href="#social">Social login</a>
+    <a href="#progress">Progress</a>
+    <a href="#cards">Cards &amp; lists</a>
+    <a href="#nav">Navigation</a>
+    <a href="#gauge">Trust gauge</a>
+    <div class="nav__group">Patterns</div>
+    <a href="#context">In context</a>
+  </aside>
+
+  <!-- ============ MAIN ============ -->
+  <main class="main">
+
+    <!-- HERO -->
+    <header class="hero" id="overview">
+      <div class="hero__mark">
+        <span class="alt-wordmark">Ailter</span>
+        <svg class="tomato" viewBox="0 0 48 44" aria-hidden="true"></svg>
+      </div>
+      <p class="lead">The design system for <b>Ailter</b> — “AI&nbsp;Filter”, a mobile service
+        that helps teens judge the trustworthiness of AI-generated social content.
+        Built on Pretendard, a warm red brand, and a calm gray scale.</p>
+      <div class="hero__meta">
+        <span><b>10</b>&nbsp;type styles</span>
+        <span><b>19</b>&nbsp;core colors</span>
+        <span><b>13</b>&nbsp;component families</span>
+        <span>Platform&nbsp;·&nbsp;<b>iOS mobile</b></span>
+        <span>Type&nbsp;·&nbsp;<b>Pretendard Variable</b></span>
+      </div>
+    </header>
+
+    <!-- COLOR -->
+    <section class="block" id="color">
+      <h2>Foundations</h2>
+      <h3 class="title">Color</h3>
+      <p class="desc">A single red <b>Primary</b> ramp carries the brand, balanced by a neutral
+        gray scale for surfaces and text. Three semantic colors encode content trust —
+        the heart of the Ailter experience.</p>
+
+      <div class="sub">Primary</div>
+      <div class="ramp" id="ramp-primary"></div>
+
+      <div class="sub">Gray</div>
+      <div class="ramp" id="ramp-gray"></div>
+
+      <div class="sub">Semantic · Content trust (콘텐츠 신뢰도)</div>
+      <div class="semantic-grid">
+        <div class="semantic-card" style="background:var(--safe-bg)">
+          <div class="row"><span class="dot" style="background:var(--safe)"></span><h4 style="color:var(--safe)">안전 · Safe</h4></div>
+          <code>--safe&nbsp;#009EFF &nbsp;·&nbsp; --safe-bg #E6F5FF</code>
+        </div>
+        <div class="semantic-card" style="background:var(--caution-bg)">
+          <div class="row"><span class="dot" style="background:var(--caution)"></span><h4 style="color:var(--caution)">주의 · Caution</h4></div>
+          <code>--caution #FF9900 &nbsp;·&nbsp; --caution-bg #FFF4E5</code>
+        </div>
+        <div class="semantic-card" style="background:var(--danger-bg)">
+          <div class="row"><span class="dot" style="background:var(--danger)"></span><h4 style="color:var(--danger)">위험 · Danger</h4></div>
+          <code>--danger&nbsp;#FF3C38 &nbsp;·&nbsp; --danger-bg #FFEAE9</code>
+        </div>
+      </div>
+    </section>
+
+    <!-- TYPE -->
+    <section class="block" id="type">
+      <h2>Foundations</h2>
+      <h3 class="title">Typography</h3>
+      <p class="desc"><b>Pretendard Variable</b> is the single UI typeface — it covers Korean and Latin
+        with even rhythm. The logo wordmark is set in <b>Wanted&nbsp;Sans ExtraBlack</b>. Every style
+        uses a tight <b>−2%</b> letter-spacing tuned for Hangul.</p>
+      <div id="type-specimen"></div>
+    </section>
+
+    <!-- SPACE -->
+    <section class="block" id="space">
+      <h2>Foundations</h2>
+      <h3 class="title">Spacing &amp; Radius</h3>
+      <p class="desc">A 4px base grid governs spacing. Corner radii step from sharp tags to soft cards,
+        with a full pill for toggles and chips.</p>
+      <div class="sub">Spacing scale</div>
+      <div class="scale-list" id="space-list"></div>
+      <div class="sub">Radius</div>
+      <div class="radius-grid" id="radius-grid"></div>
+    </section>
+
+    <!-- ELEVATION -->
+    <section class="block" id="elevation">
+      <h2>Foundations</h2>
+      <h3 class="title">Elevation</h3>
+      <p class="desc">Ailter stays flat and airy. Cards rely on a hairline border plus a whisper-soft
+        shadow; only transient surfaces (popovers, sheets) lift further.</p>
+      <div class="elev-grid">
+        <div class="elev-tile" style="box-shadow: inset 0 0 0 1px var(--border), var(--shadow-card)">Card</div>
+        <div class="elev-tile" style="box-shadow: var(--shadow-soft)">Soft</div>
+        <div class="elev-tile" style="box-shadow: var(--shadow-pop)">Popover</div>
+        <div class="elev-tile" style="box-shadow: var(--shadow-nav)">Nav bar</div>
+      </div>
+    </section>
+
+    <!-- ============ COMPONENTS ============ -->
+
+    <!-- BUTTONS -->
+    <section class="block" id="buttons">
+      <h2>Components</h2>
+      <h3 class="title">Buttons</h3>
+      <p class="desc">Pill-soft 12px corners, 56px tall for primary actions. Primary fills with brand red;
+        secondary and tonal recede; disabled drops to gray-400.</p>
+
+      <div class="compo">
+        <div class="lead"><h4>Variants</h4><span class="api">.alt-btn · --primary / --secondary / --tonal / --neutral</span></div>
+        <div class="demo">
+          <div class="demo__stage">
+            <button class="alt-btn alt-btn--lg alt-btn--primary">시작하기</button>
+            <button class="alt-btn alt-btn--lg alt-btn--secondary">다시 분석</button>
+            <button class="alt-btn alt-btn--lg alt-btn--tonal">13세 이하</button>
+            <button class="alt-btn alt-btn--lg alt-btn--neutral">검색</button>
+            <button class="alt-btn alt-btn--lg alt-btn--primary" disabled>다음</button>
+          </div>
+          <div class="demo__foot"><span>Height&nbsp;<b>56px</b></span><span>Radius&nbsp;<b>12px</b></span><span>Label&nbsp;<b>button_lg · 16/Medium</b></span></div>
+          <details class="code"><summary>Code</summary><pre><span class="t">&lt;button</span> <span class="a">class</span>=<span class="s">"alt-btn alt-btn--lg alt-btn--primary"</span><span class="t">&gt;</span>시작하기<span class="t">&lt;/button&gt;</span>
+<span class="t">&lt;button</span> <span class="a">class</span>=<span class="s">"alt-btn alt-btn--lg alt-btn--secondary"</span><span class="t">&gt;</span>다시 분석<span class="t">&lt;/button&gt;</span>
+<span class="t">&lt;button</span> <span class="a">class</span>=<span class="s">"alt-btn alt-btn--lg alt-btn--primary"</span> <span class="a">disabled</span><span class="t">&gt;</span>다음<span class="t">&lt;/button&gt;</span></pre></details>
+        </div>
+      </div>
+
+      <div class="compo">
+        <div class="lead"><h4>Sizes</h4><span class="api">--lg 56 · --md 48 · --sm 36</span></div>
+        <div class="demo">
+          <div class="demo__stage">
+            <button class="alt-btn alt-btn--lg alt-btn--primary">Large</button>
+            <button class="alt-btn alt-btn--md alt-btn--primary">Medium</button>
+            <button class="alt-btn alt-btn--sm alt-btn--primary">Small</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- OPTIONS -->
+    <section class="block" id="options">
+      <h2>Components</h2>
+      <h3 class="title">Option rows</h3>
+      <p class="desc">Full-width single-select rows used through onboarding. Default reads gray;
+        the selected state lifts to a tonal red fill with a 1.5px brand outline.</p>
+      <div class="compo">
+        <div class="lead"><h4>Single select</h4><span class="api">.alt-option · [aria-selected]</span></div>
+        <div class="demo">
+          <div class="demo__stage col" style="max-width:380px">
+            <button class="alt-option">13세 이하</button>
+            <button class="alt-option is-selected" aria-selected="true">14 – 18세</button>
+            <button class="alt-option">19세 이상</button>
+          </div>
+          <div class="demo__foot"><span>Height&nbsp;<b>56px</b></span><span>Fill&nbsp;<b>gray-100 → primary-50</b></span></div>
+          <details class="code"><summary>Code</summary><pre><span class="t">&lt;button</span> <span class="a">class</span>=<span class="s">"alt-option"</span><span class="t">&gt;</span>13세 이하<span class="t">&lt;/button&gt;</span>
+<span class="t">&lt;button</span> <span class="a">class</span>=<span class="s">"alt-option is-selected"</span> <span class="a">aria-selected</span>=<span class="s">"true"</span><span class="t">&gt;</span>14 – 18세<span class="t">&lt;/button&gt;</span></pre></details>
+        </div>
+      </div>
+    </section>
+
+    <!-- FIELDS -->
+    <section class="block" id="fields">
+      <h2>Components</h2>
+      <h3 class="title">Inputs &amp; Dropdown</h3>
+      <p class="desc">Inputs sit on a sunken gray-100 fill with a hairline border; focus draws the brand
+        outline. Dropdowns add a trailing chevron, and search pairs a field with a neutral action.</p>
+      <div class="compo">
+        <div class="lead"><h4>Text · Dropdown · Search</h4><span class="api">.alt-field</span></div>
+        <div class="demo">
+          <div class="demo__stage col" style="max-width:420px">
+            <div class="alt-field"><input placeholder="콘텐츠 URL을 입력해주세요" /></div>
+            <div class="alt-field alt-field--dropdown">
+              <span style="flex:1">플랫폼 선택</span>
+              <svg class="alt-field__chevron" width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+            <div class="alt-search">
+              <div class="alt-field">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" style="color:var(--gray-400);flex-shrink:0"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2"/><path d="M20 20l-3-3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                <input placeholder="분석한 콘텐츠를 검색해보세요" />
+              </div>
+              <button class="alt-btn alt-btn--md alt-btn--neutral">검색</button>
+            </div>
+          </div>
+          <div class="demo__foot"><span>Height&nbsp;<b>52px</b></span><span>Placeholder&nbsp;<b>gray-400</b></span><span>Focus&nbsp;<b>primary-500</b></span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SELECTION -->
+    <section class="block" id="selection">
+      <h2>Components</h2>
+      <h3 class="title">Selection controls</h3>
+      <p class="desc">Checkbox, radio and toggle share the brand red for the “on” state and a calm gray
+        for rest. Toggles drive the live “AI 감지” detection switch in the app header.</p>
+      <div class="demo">
+        <div class="demo__stage" style="gap:48px">
+          <div class="stack">
+            <div class="pair">
+              <label class="alt-checkbox"><input type="checkbox" /><span class="alt-checkbox__box"><svg width="14" height="14" viewBox="0 0 14 10" fill="none"><path d="M1 5l4 4 8-8" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></label>
+              <label class="alt-checkbox"><input type="checkbox" checked /><span class="alt-checkbox__box"><svg width="14" height="14" viewBox="0 0 14 10" fill="none"><path d="M1 5l4 4 8-8" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></label>
+            </div>
+            <span class="lbl-tiny">Checkbox</span>
+          </div>
+          <div class="stack">
+            <div class="pair">
+              <label class="alt-radio"><input type="radio" name="r" /><span class="alt-radio__dot"></span></label>
+              <label class="alt-radio"><input type="radio" name="r" checked /><span class="alt-radio__dot"></span></label>
+            </div>
+            <span class="lbl-tiny">Radio</span>
+          </div>
+          <div class="stack">
+            <div class="pair">
+              <label class="alt-toggle"><input type="checkbox" /><span class="alt-toggle__track"><span class="alt-toggle__thumb"></span></span></label>
+              <label class="alt-toggle"><input type="checkbox" checked /><span class="alt-toggle__track"><span class="alt-toggle__thumb"></span></span></label>
+            </div>
+            <span class="lbl-tiny">Toggle</span>
+          </div>
+        </div>
+        <details class="code"><summary>Code</summary><pre><span class="t">&lt;label</span> <span class="a">class</span>=<span class="s">"alt-toggle"</span><span class="t">&gt;</span>
+  <span class="t">&lt;input</span> <span class="a">type</span>=<span class="s">"checkbox"</span> <span class="a">checked</span><span class="t">/&gt;</span>
+  <span class="t">&lt;span</span> <span class="a">class</span>=<span class="s">"alt-toggle__track"</span><span class="t">&gt;&lt;span</span> <span class="a">class</span>=<span class="s">"alt-toggle__thumb"</span><span class="t">&gt;&lt;/span&gt;&lt;/span&gt;</span>
+<span class="t">&lt;/label&gt;</span></pre></details>
+      </div>
+    </section>
+
+    <!-- TAGS -->
+    <section class="block" id="tags">
+      <h2>Components</h2>
+      <h3 class="title">Tags &amp; status badges</h3>
+      <p class="desc">Trust verdicts ride on tinted pills. Pair a soft background with its semantic ink;
+        a dot-and-label legend annotates the gauge.</p>
+      <div class="demo">
+        <div class="demo__stage">
+          <span class="alt-tag alt-tag--danger"><span class="alt-tag__dot"></span>위험</span>
+          <span class="alt-tag alt-tag--caution"><span class="alt-tag__dot"></span>주의</span>
+          <span class="alt-tag alt-tag--safe"><span class="alt-tag__dot"></span>안전</span>
+          <span class="alt-tag alt-tag--danger">AI 생성 의심</span>
+          <span class="alt-tag alt-tag--neutral">일반 콘텐츠</span>
+        </div>
+        <div class="demo__stage" style="padding-top:0;gap:22px">
+          <span class="alt-legend alt-legend--danger"><span class="alt-tag__dot"></span>위험</span>
+          <span class="alt-legend alt-legend--caution"><span class="alt-tag__dot"></span>주의</span>
+          <span class="alt-legend alt-legend--safe"><span class="alt-tag__dot"></span>안전</span>
+        </div>
+        <details class="code"><summary>Code</summary><pre><span class="t">&lt;span</span> <span class="a">class</span>=<span class="s">"alt-tag alt-tag--caution"</span><span class="t">&gt;&lt;span</span> <span class="a">class</span>=<span class="s">"alt-tag__dot"</span><span class="t">&gt;&lt;/span&gt;</span>주의<span class="t">&lt;/span&gt;</span></pre></details>
+      </div>
+    </section>
+
+    <!-- CHIPS -->
+    <section class="block" id="chips">
+      <h2>Components</h2>
+      <h3 class="title">Filter chips</h3>
+      <p class="desc">Horizontally scrolling filters on the history screen. Active chips fill tonal red
+        with a brand outline.</p>
+      <div class="demo">
+        <div class="demo__stage">
+          <button class="alt-chip is-active" aria-pressed="true">전체</button>
+          <button class="alt-chip">AI 의심</button>
+          <button class="alt-chip">일반 콘텐츠</button>
+          <button class="alt-chip">위험 콘텐츠</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- SOCIAL -->
+    <section class="block" id="social">
+      <h2>Components</h2>
+      <h3 class="title">Social login</h3>
+      <p class="desc">Three OAuth entries with platform-true color: Kakao yellow, Google white, Apple gray.
+        52px tall, 8px corners.</p>
+      <div class="demo">
+        <div class="demo__stage col" style="max-width:380px">
+          <button class="alt-social alt-social--kakao">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="#1E1E1E"><path d="M12 3C6.5 3 2 6.6 2 11c0 2.8 1.9 5.3 4.7 6.7-.2.7-.7 2.6-.8 3-.1.5.2.5.4.4.2-.1 2.6-1.8 3.6-2.5.7.1 1.4.2 2.1.2 5.5 0 10-3.6 10-8S17.5 3 12 3z"/></svg>
+            카카오로 시작하기
+          </button>
+          <button class="alt-social alt-social--google">
+            <svg width="20" height="20" viewBox="0 0 24 24"><path fill="#4285F4" d="M23 12.3c0-.8-.1-1.6-.2-2.3H12v4.5h6.2c-.3 1.4-1.1 2.6-2.3 3.4v2.8h3.7C21.7 18.6 23 15.7 23 12.3z"/><path fill="#34A853" d="M12 24c3.1 0 5.7-1 7.6-2.8l-3.7-2.8c-1 .7-2.3 1.1-3.9 1.1-3 0-5.5-2-6.4-4.8H1.8v2.9C3.7 21.3 7.5 24 12 24z"/><path fill="#FBBC05" d="M5.6 14.7c-.2-.7-.4-1.4-.4-2.2s.1-1.5.4-2.2V7.4H1.8C1 9 .6 10.7.6 12.5s.4 3.5 1.2 5.1l3.8-2.9z"/><path fill="#EA4335" d="M12 5.4c1.7 0 3.2.6 4.4 1.7l3.3-3.3C17.7 1.9 15.1.9 12 .9 7.5.9 3.7 3.6 1.8 7.4l3.8 2.9C6.5 7.4 9 5.4 12 5.4z"/></svg>
+            구글로 시작하기
+          </button>
+          <button class="alt-social alt-social--apple">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="#1E1E1E"><path d="M16.4 12.7c0-2.3 1.9-3.4 2-3.5-1.1-1.6-2.8-1.8-3.4-1.9-1.4-.1-2.8.8-3.5.8-.7 0-1.9-.8-3.1-.8-1.6 0-3.1.9-3.9 2.4-1.7 2.9-.4 7.2 1.2 9.6.8 1.2 1.7 2.5 3 2.4 1.2-.1 1.6-.8 3.1-.8s1.9.8 3.1.8c1.3 0 2.1-1.2 2.9-2.3.9-1.3 1.3-2.6 1.3-2.7-.1 0-2.5-1-2.5-3.7zM14.1 5.6c.7-.8 1.1-2 1-3.1-.9 0-2.1.6-2.8 1.4-.6.7-1.1 1.9-1 3 1 .1 2.1-.5 2.8-1.3z"/></svg>
+            애플로 시작하기
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- PROGRESS -->
+    <section class="block" id="progress">
+      <h2>Components</h2>
+      <h3 class="title">Progress</h3>
+      <p class="desc">A slim 6px track in gray-200, filled with brand red — used while content is analyzed.</p>
+      <div class="demo">
+        <div class="demo__stage col" style="gap:20px;max-width:460px">
+          <div class="alt-progress"><div class="alt-progress__fill" style="width:35%"></div></div>
+          <div class="alt-progress"><div class="alt-progress__fill" style="width:68%"></div></div>
+          <div class="alt-progress"><div class="alt-progress__fill" style="width:100%"></div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CARDS -->
+    <section class="block" id="cards">
+      <h2>Components</h2>
+      <h3 class="title">Cards &amp; lists</h3>
+      <p class="desc">The white 16px card is the workhorse surface. List rows combine a platform thumbnail,
+        a title with timestamp, and a trailing trust badge. Section headers carry a “전체보기” link.</p>
+
+      <div class="compo">
+        <div class="lead"><h4>Content card</h4><span class="api">.alt-card</span></div>
+        <div class="demo"><div class="demo__stage tinted center" style="padding:40px">
+          <div class="alt-card" style="width:340px">
+            <div class="alt-legend alt-legend--caution" style="margin-bottom:10px"><span class="alt-tag__dot"></span><span style="color:var(--text-muted)">AI 감지 활성화</span></div>
+            <h3 class="alt-h2" style="color:var(--text-strong)">실시간 분석하기</h3>
+            <p class="alt-body2" style="color:var(--text-muted);margin-top:4px">수현님, 안녕하세요!<br/>오늘도 콘텐츠 분석을 시작할까요?</p>
+          </div>
+        </div></div>
+      </div>
+
+      <div class="compo">
+        <div class="lead"><h4>List rows + section header</h4><span class="api">.alt-list-item · .alt-section-head</span></div>
+        <div class="demo"><div class="demo__stage tinted" style="padding:32px;justify-content:center">
+          <div class="alt-card" style="width:360px;padding:18px 20px">
+            <div class="alt-section-head" style="margin-bottom:6px">
+              <span class="alt-section-head__title">최근 분석 기록</span>
+              <span class="alt-section-head__more">전체보기</span>
+            </div>
+            <div class="alt-list-item">
+              <span class="alt-list-item__media" style="background:#F4E9FE"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="18" height="18" rx="5" stroke="#C13584" stroke-width="2"/><circle cx="12" cy="12" r="4" stroke="#C13584" stroke-width="2"/><circle cx="17.5" cy="6.5" r="1.2" fill="#C13584"/></svg></span>
+              <div class="alt-list-item__body"><span class="alt-list-item__title">Instagram</span><span class="alt-list-item__meta">2분 전</span></div>
+              <span class="alt-tag alt-tag--caution">주의</span>
+            </div>
+            <hr class="alt-divider" />
+            <div class="alt-list-item">
+              <span class="alt-list-item__media" style="background:#111">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="#fff"><path d="M16 3c.3 2.2 1.8 3.9 4 4.2v2.7c-1.5 0-2.9-.5-4-1.3v6.1c0 3.2-2.4 5.3-5.2 5.3-2.7 0-4.9-2-4.9-4.7 0-2.9 2.5-5 5.6-4.4v2.8c-.4-.1-.8-.2-1.1-.2-1.2 0-2 .9-2 2 0 1.2.9 2 2.1 2 1.2 0 2-.9 2-2.2V3H16z"/></svg>
+              </span>
+              <div class="alt-list-item__body"><span class="alt-list-item__title">Tik Tok</span><span class="alt-list-item__meta">15분 전</span></div>
+              <span class="alt-tag alt-tag--danger">위험</span>
+            </div>
+            <hr class="alt-divider" />
+            <div class="alt-list-item">
+              <span class="alt-list-item__media" style="background:#FFECEC"><svg width="22" height="22" viewBox="0 0 24 24" fill="#FF0000"><path d="M22 7.4c-.2-1.3-.9-2.2-2.2-2.4C17.9 4.6 12 4.6 12 4.6s-5.9 0-7.8.4C2.9 5.2 2.2 6.1 2 7.4 1.7 9.3 1.7 12 1.7 12s0 2.7.3 4.6c.2 1.3.9 2.2 2.2 2.4 1.9.4 7.8.4 7.8.4s5.9 0 7.8-.4c1.3-.2 2-1.1 2.2-2.4.3-1.9.3-4.6.3-4.6s0-2.7-.3-4.6zM10 15V9l5 3-5 3z"/></svg></span>
+              <div class="alt-list-item__body"><span class="alt-list-item__title">YouTube Shorts</span><span class="alt-list-item__meta">1시간 전</span></div>
+              <span class="alt-tag alt-tag--safe">안전</span>
+            </div>
+          </div>
+        </div></div>
+      </div>
+    </section>
+
+    <!-- NAV -->
+    <section class="block" id="nav">
+      <h2>Components</h2>
+      <h3 class="title">Navigation &amp; chrome</h3>
+      <p class="desc">A four-tab bottom bar (홈 · 기록 · 학습 · 설정) with brand-red active state, plus the
+        iOS status bar, home indicator, and the Ailter app header with its live detection toggle.</p>
+
+      <div class="demo"><div class="demo__stage tinted center" style="padding:30px">
+        <div style="width:360px;border-radius:16px;overflow:hidden;box-shadow:inset 0 0 0 1px var(--border);background:var(--surface)">
+          <div class="alt-statusbar" id="statusbar-demo"></div>
+          <div class="alt-appbar">
+            <span class="alt-wordmark" style="font-size:22px">Ailter</span>
+            <div class="alt-appbar__right">
+              <span class="alt-appbar__toggle">AI감지
+                <label class="alt-toggle"><input type="checkbox" checked /><span class="alt-toggle__track"><span class="alt-toggle__thumb"></span></span></label>
+              </span>
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" style="color:var(--gray-500)"><path d="M18 8a6 6 0 10-12 0c0 7-3 9-3 9h18s-3-2-3-9" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M10.5 21a2 2 0 003 0" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" style="color:var(--gray-500)"><circle cx="12" cy="8" r="4" stroke="currentColor" stroke-width="1.8"/><path d="M4 20c0-3.3 3.6-6 8-6s8 2.7 8 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+            </div>
+          </div>
+          <div style="height:120px;background:var(--bg)"></div>
+          <nav class="alt-tabbar" id="tabbar-demo"></nav>
+          <div class="alt-home-indicator"></div>
+        </div>
+      </div></div>
+    </section>
+
+    <!-- GAUGE -->
+    <section class="block" id="gauge">
+      <h2>Components</h2>
+      <h3 class="title">Trust gauge</h3>
+      <p class="desc">The signature component: a semicircular meter scoring content credibility 0–100.
+        The red arc and verdict label (위험 / 주의 / 안전) read at a glance.</p>
+      <div class="demo"><div class="demo__stage center" style="padding:44px">
+        <div class="alt-card" style="width:340px;display:flex;flex-direction:column;align-items:center;gap:14px">
+          <div class="alt-section-head" style="width:100%">
+            <span class="alt-section-head__title" style="font-size:16px">콘텐츠 신뢰도</span>
+            <span class="alt-tag alt-tag--danger">AI 생성 의심</span>
+          </div>
+          <div id="gauge-demo"></div>
+          <div style="display:flex;gap:22px">
+            <span class="alt-legend alt-legend--danger"><span class="alt-tag__dot"></span>위험</span>
+            <span class="alt-legend alt-legend--caution"><span class="alt-tag__dot"></span>주의</span>
+            <span class="alt-legend alt-legend--safe"><span class="alt-tag__dot"></span>안전</span>
+          </div>
+        </div>
+      </div></div>
+    </section>
+
+    <!-- IN CONTEXT -->
+    <section class="block" id="context" style="border-bottom:none">
+      <h2>Patterns</h2>
+      <h3 class="title">In context</h3>
+      <p class="desc">The home screen, assembled entirely from the components above — showing how tokens,
+        type, cards, gauge, badges and navigation compose into the real Ailter experience.</p>
+      <div style="display:flex;justify-content:center;padding:20px 0">
+        <div class="phone"><div class="phone__screen">
+          <div class="alt-statusbar" id="statusbar-phone"></div>
+          <div class="alt-appbar">
+            <span class="alt-wordmark" style="font-size:22px">Ailter</span>
+            <div class="alt-appbar__right">
+              <span class="alt-appbar__toggle">AI감지
+                <label class="alt-toggle"><input type="checkbox" checked /><span class="alt-toggle__track"><span class="alt-toggle__thumb"></span></span></label>
+              </span>
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" style="color:var(--gray-500)"><path d="M18 8a6 6 0 10-12 0c0 7-3 9-3 9h18s-3-2-3-9" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M10.5 21a2 2 0 003 0" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+            </div>
+          </div>
+          <div class="screen-body">
+            <div class="alt-card greet-card">
+              <div>
+                <div class="alt-legend alt-legend--caution" style="margin-bottom:8px"><span class="alt-tag__dot"></span><span style="color:var(--text-muted)">AI 감지 활성화</span></div>
+                <h3 class="alt-h2 nowrap">실시간 분석하기</h3>
+                <p class="alt-body2" style="color:var(--text-muted);margin-top:4px">수현님, 안녕하세요!<br/>오늘도 분석을 시작할까요?</p>
+              </div>
+              <svg class="tomato" viewBox="0 0 48 44" aria-hidden="true"></svg>
+            </div>
+
+            <div class="alt-card" style="display:flex;flex-direction:column;align-items:center;gap:12px">
+              <div class="alt-section-head" style="width:100%">
+                <span class="alt-section-head__title nowrap" style="font-size:15px">콘텐츠 신뢰도</span>
+                <span class="alt-tag alt-tag--danger">AI 생성 의심</span>
+              </div>
+              <div id="gauge-phone"></div>
+              <div style="display:flex;gap:20px">
+                <span class="alt-legend alt-legend--danger"><span class="alt-tag__dot"></span>위험</span>
+                <span class="alt-legend alt-legend--caution"><span class="alt-tag__dot"></span>주의</span>
+                <span class="alt-legend alt-legend--safe"><span class="alt-tag__dot"></span>안전</span>
+              </div>
+            </div>
+
+            <div class="alt-card" style="padding:16px 18px">
+              <div class="alt-section-head" style="margin-bottom:4px">
+                <span class="alt-section-head__title" style="font-size:15px">최근 분석 기록</span>
+                <span class="alt-section-head__more">전체보기</span>
+              </div>
+              <div class="alt-list-item">
+                <span class="alt-list-item__media" style="background:#F4E9FE"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="18" height="18" rx="5" stroke="#C13584" stroke-width="2"/><circle cx="12" cy="12" r="4" stroke="#C13584" stroke-width="2"/><circle cx="17.5" cy="6.5" r="1.2" fill="#C13584"/></svg></span>
+                <div class="alt-list-item__body"><span class="alt-list-item__title">Instagram</span><span class="alt-list-item__meta">2분 전</span></div>
+                <span class="alt-tag alt-tag--caution">주의</span>
+              </div>
+              <hr class="alt-divider" />
+              <div class="alt-list-item">
+                <span class="alt-list-item__media" style="background:#111"><svg width="18" height="18" viewBox="0 0 24 24" fill="#fff"><path d="M16 3c.3 2.2 1.8 3.9 4 4.2v2.7c-1.5 0-2.9-.5-4-1.3v6.1c0 3.2-2.4 5.3-5.2 5.3-2.7 0-4.9-2-4.9-4.7 0-2.9 2.5-5 5.6-4.4v2.8c-.4-.1-.8-.2-1.1-.2-1.2 0-2 .9-2 2 0 1.2.9 2 2.1 2 1.2 0 2-.9 2-2.2V3H16z"/></svg></span>
+                <div class="alt-list-item__body"><span class="alt-list-item__title">Tik Tok</span><span class="alt-list-item__meta">15분 전</span></div>
+                <span class="alt-tag alt-tag--danger">위험</span>
+              </div>
+            </div>
+          </div>
+          <nav class="alt-tabbar" id="tabbar-phone" style="margin-top:18px"></nav>
+          <div class="alt-home-indicator"></div>
+        </div></div>
+      </div>
+    </section>
+
+    <footer style="padding:40px 0 0;color:var(--text-subtle);font-size:13px">
+      Ailter Design System · derived 1:1 from the source Figma · Pretendard Variable · #FF3C38
+    </footer>
+
+  </main>
+</div>
+
+<script>
+/* ---------- data ---------- */
+const primary = [['50','#FFF8F8'],['100','#FFD8D7'],['200','#FFB1AF'],['300','#FF8A88'],['400','#FF6360'],['500','#FF3C38'],['600','#CF302D'],['700','#9F2422'],['800','#6F1816'],['900','#3F0C0B']];
+const gray = [['50','#FCFCFD'],['100','#F9FAFB'],['200','#E9EBEF'],['300','#C5C6CD'],['400','#999BA5'],['500','#6F717C'],['black','#1E1E1E']];
+const types = [
+  ['H1','40 / 150% / −2%','SemiBold','alt-h1','Ag 가나다'],
+  ['H2','24 / 150% / −2%','Bold','alt-h2','실시간 분석하기'],
+  ['H3','20 / 150% / −2%','SemiBold','alt-h3','콘텐츠 신뢰 등급'],
+  ['Sub 1','18 / 150% / −2%','SemiBold','alt-sub1','최근 분석 기록'],
+  ['Sub 2','16 / 150% / −2%','SemiBold','alt-sub2','단계별 체크포인트'],
+  ['Body 1','16 / 150% / −2%','Regular','alt-body1','공공기관이나 검증된 뉴스 매체의 정보'],
+  ['Body 2','14 / 150% / −2%','Regular','alt-body2','오늘도 콘텐츠 분석을 시작할까요?'],
+  ['button_lg','16 / 100% / −2%','Medium','alt-btn-lg','서비스 시작하기'],
+  ['button_sm','14 / 100% / −2%','Medium','alt-btn-sm','다시 분석'],
+  ['Caption','12 / 150% / −2%','Regular','alt-caption','허위 정보가 포함된 이미지일 수 있습니다'],
+];
+const spaces = [['space-1','4'],['space-2','8'],['space-3','12'],['space-4','16'],['space-5','20'],['space-6','24'],['space-8','32'],['space-10','40'],['space-12','48']];
+const radii = [['xs','4px'],['sm','8px'],['md','12px'],['lg','16px'],['xl','20px'],['full','999px']];
+
+function swatch(name, hex, prefix){
+  const dark = ['600','700','800','900','black','500'].includes(name);
+  return `<div class="swatch"><div class="swatch__chip" style="background:${hex}"></div>
+    <div class="swatch__meta"><div class="swatch__name">${prefix}-${name}</div>
+    <div class="swatch__hex">${hex}</div></div></div>`;
+}
+document.getElementById('ramp-primary').innerHTML = primary.map(c=>swatch(c[0],c[1],'primary')).join('');
+document.getElementById('ramp-gray').innerHTML = gray.map(c=>swatch(c[0],c[1],'gray')).join('');
+
+document.getElementById('type-specimen').innerHTML = types.map(t=>`
+  <div class="type-row">
+    <div class="tk"><b>${t[0]}</b>${t[1]}<br/>Pretendard ${t[2]}</div>
+    <div class="${t[3]}" style="color:var(--text-strong)">${t[4]}</div>
+  </div>`).join('');
+
+document.getElementById('space-list').innerHTML = spaces.map(s=>`
+  <div class="scale-row"><span class="lbl"><b>--${s[0]}</b> · ${s[1]}px</span>
+  <span class="bar" style="width:${s[1]}px"></span></div>`).join('');
+document.getElementById('radius-grid').innerHTML = radii.map(r=>`
+  <div class="radius-tile" style="border-radius:var(--radius-${r[0]})">${r[0]} · ${r[1]}</div>`).join('');
+
+/* status bar */
+const statusbar = `<span class="alt-statusbar__time">9:41</span>
+  <span class="alt-statusbar__icons">
+    <svg width="18" height="12" viewBox="0 0 18 12" fill="#1E1E1E"><rect x="0" y="8" width="3" height="4" rx="1"/><rect x="5" y="5" width="3" height="7" rx="1"/><rect x="10" y="2.5" width="3" height="9.5" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1"/></svg>
+    <svg width="17" height="12" viewBox="0 0 17 12" fill="#1E1E1E"><path d="M8.5 2.2c2.5 0 4.8 1 6.5 2.6l1.3-1.4C14.2 1.4 11.5.2 8.5.2S2.8 1.4.7 3.4L2 4.8C3.7 3.2 6 2.2 8.5 2.2z"/><path d="M8.5 6c1.3 0 2.5.5 3.4 1.4l1.3-1.4C12 4.8 10.3 4 8.5 4S5 4.8 3.8 6l1.3 1.4C6 6.5 7.2 6 8.5 6z"/><circle cx="8.5" cy="10" r="1.8"/></svg>
+    <span style="display:inline-flex;align-items:center"><span style="width:24px;height:12px;border-radius:3px;box-shadow:inset 0 0 0 1px rgba(0,0,0,.35);position:relative;display:inline-block"><span style="position:absolute;inset:2px;width:18px;background:#1E1E1E;border-radius:1.5px"></span></span><span style="width:1.5px;height:4px;background:rgba(0,0,0,.4);border-radius:0 1px 1px 0;margin-left:1px"></span></span>
+  </span>`;
+['statusbar-demo','statusbar-phone'].forEach(id=>{const e=document.getElementById(id); if(e) e.innerHTML=statusbar;});
+
+/* tab bar */
+const tabs = [
+  ['홈', '<path d="M3 10.5L12 3l9 7.5"/><path d="M5 9.5V20h14V9.5"/>', true],
+  ['기록','<path d="M12 7v5l3 2"/><circle cx="12" cy="12" r="9"/>', false],
+  ['학습','<path d="M4 5h16v13H4z"/><path d="M12 5v13"/>', false],
+  ['설정','<circle cx="12" cy="12" r="3.2"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M19 5l-2 2M7 17l-2 2"/>', false],
+];
+const tabbar = tabs.map(t=>`<button class="alt-tab ${t[2]?'is-active':''}">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${t[1]}</svg>${t[0]}</button>`).join('');
+['tabbar-demo','tabbar-phone'].forEach(id=>{const e=document.getElementById(id); if(e) e.innerHTML=tabbar;});
+
+/* gauge */
+function gauge(value, w){
+  const r=100, cx=110, cy=112, len=Math.PI*r, fill=len*(value/100);
+  const f=value/100, theta=Math.PI-(f*Math.PI);
+  const kx=cx+r*Math.cos(theta), ky=cy-r*Math.sin(theta);
+  return `<div class="alt-gauge" style="width:${w}px">
+    <svg viewBox="0 0 220 130">
+      <path d="M10 112 A100 100 0 0 1 210 112" fill="none" stroke="var(--gray-200)" stroke-width="14" stroke-linecap="round"/>
+      <path d="M10 112 A100 100 0 0 1 210 112" fill="none" stroke="url(#gg)" stroke-width="14" stroke-linecap="round"
+        stroke-dasharray="${fill} ${len}"/>
+      <circle cx="${kx}" cy="${ky}" r="9" fill="#fff" stroke="var(--primary-500)" stroke-width="3"/>
+      <defs><linearGradient id="gg" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0" stop-color="#FF6360"/><stop offset="1" stop-color="#FF3C38"/></linearGradient></defs>
+    </svg>
+    <div class="alt-gauge__center"><div class="alt-gauge__label">주의</div><div class="alt-gauge__value">${value}%</div></div>
+  </div>`;
+}
+const g1=document.getElementById('gauge-demo'); if(g1) g1.innerHTML=gauge(42,220);
+const g2=document.getElementById('gauge-phone'); if(g2) g2.innerHTML=gauge(42,200);
+
+/* tomato mascot — simple brand mark */
+const tomato = `<svg viewBox="0 0 48 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <ellipse cx="24" cy="27" rx="17" ry="15" fill="url(#tg)"/>
+  <path d="M24 13c-1 0-2-.4-2.6-1.2C20 10.4 17 9 14 10c2-2.6 5.4-2.8 7.6-1.4C22.4 6 24 5 26 5c-.6 1.4-.2 3 .8 4 2-1.4 5.4-1.2 7.2 1-3-1-6 .4-7.4 1.8C26 12.6 25 13 24 13z" fill="#3DBE6A"/>
+  <circle cx="19" cy="27" r="1.7" fill="#3a1410"/>
+  <circle cx="29" cy="27" r="1.7" fill="#3a1410"/>
+  <ellipse cx="34" cy="22" rx="6" ry="5.5" fill="#fff" opacity=".18"/>
+  <defs><linearGradient id="tg" x1="8" y1="14" x2="40" y2="42" gradientUnits="userSpaceOnUse">
+    <stop stop-color="#FF6360"/><stop offset="1" stop-color="#D4231F"/></linearGradient></defs>
+</svg>`;
+document.querySelectorAll('.tomato').forEach(s=>s.outerHTML = tomato.replace('<svg', `<svg class="${s.getAttribute('class')}" style="${s.getAttribute('style')||''}"`));
+</script>
+</body>
+</html>
